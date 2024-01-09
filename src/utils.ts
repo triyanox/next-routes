@@ -44,7 +44,11 @@ const walk = async (dir: string): Promise<IFSTreeWalker> => {
 const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
   const tree = await walk(appDir);
   const routes: IRoute[] = [];
-  const traverse = (tree: IFSTreeWalker, params: { [key: string]: string }) => {
+  const traverse = (
+    tree: IFSTreeWalker,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _params: { [key: string]: string },
+  ) => {
     for (const path of tree.paths) {
       const { base } = path;
       const isDynamic = base.includes('[') && base.includes(']');

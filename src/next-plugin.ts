@@ -5,7 +5,7 @@ import {
   NextJsWebpackConfig,
   WebpackConfigContext,
 } from 'next/dist/server/config-shared';
-import type { Compiler, WebpackPluginInstance } from 'webpack';
+import type { WebpackPluginInstance } from 'webpack';
 import { __gen_declarations__, __gen_link$__ } from './codegen';
 import { __types_dir__ } from './config';
 import { NextRoutesOptions } from './types';
@@ -40,14 +40,14 @@ class NextRoutesPlugin implements WebpackPluginInstance {
     await __gen_link$__(appDir, utilsPath);
     if (process.env.NODE_ENV === 'development') {
       const watcher = watch(appDir, {
-        ignored: [/node_modules/, /(^|[\/\\])\../, /(^|[\/\\])_/],
+        ignored: [/node_modules/, /(^|[/\\])\../, /(^|[/\\])_/],
         persistent: true,
       });
       watcher.on('ready', () => {
         console.log(chalk.cyanBright(`👀 Watching the app directory...`));
       });
 
-      let changedFiles = new Set();
+      const changedFiles = new Set();
       let regenerateTimeout: NodeJS.Timeout;
 
       const regenerateRoutes = async () => {
@@ -89,7 +89,7 @@ class NextRoutesPlugin implements WebpackPluginInstance {
     }
   }
 
-  apply(compiler: Compiler) {
+  apply() {
     this.generateRoutes().then(() => {
       console.log(chalk.greenBright(`🚀 Routes generated!`));
     });
