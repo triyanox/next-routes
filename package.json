@@ -2,6 +2,9 @@
   "name": "@triyanox/next-routes",
   "description": "You will never have broken links in your Next.js app again",
   "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "author": {
     "name": "Mohamed Achaq",
