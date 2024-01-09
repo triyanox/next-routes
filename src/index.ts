@@ -11,8 +11,7 @@ import { NextRoutesOptions } from './types';
  * @description
  * `@triyanox/next-routes` is a powerful plugin for Next.js that ensures your application's links are always valid. It generates routes and utilities for your application, making link management a breeze.
  *
- * ## Roadmap
- *
+ * @roadmap
  * - [x] Support TypeScript out of the box
  * - [x] Support Next.js 13+ app directory structure
  * - [x] Generate routes and utilities for your application
