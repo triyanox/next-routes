@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import { getRoutesMap } from "./utils";
+import fs from 'fs/promises';
+import { getRoutesMap } from './utils';
 
 const __gen_declarations__ = async (
   appDir: string,
@@ -51,7 +51,7 @@ const link$ = <T extends keyof RoutesOutput = keyof RoutesOutput>({
     const params_values = Object.values(params!);
     path = params_keys.reduce((acc, key, index) => {
       // @ts-ignore
-      return acc.replace(${"`[${key}]`, params_values[index]"});
+      return acc.replace(${'`[${key}]`, params_values[index]'});
     }, route.path);
   }
 
@@ -59,11 +59,11 @@ const link$ = <T extends keyof RoutesOutput = keyof RoutesOutput>({
     const queryString = new URLSearchParams(
       query as Record<string, string>,
     ).toString();
-    path += ${"`?${queryString}`"};
+    path += ${'`?${queryString}`'};
   }
 
   if (hash) {
-    path += ${"`#${hash}`"};
+    path += ${'`#${hash}`'};
   }
 
   return path;

@@ -1,17 +1,17 @@
-import fs from "fs/promises";
-import path from "path";
-import { __app_dir__, __valid_page_extensions__ } from "./config";
-import { IFSTreeWalker, IRoute } from "./types";
+import fs from 'fs/promises';
+import path from 'path';
+import { __app_dir__, __valid_page_extensions__ } from './config';
+import { IFSTreeWalker, IRoute } from './types';
 
 const cleanPath = (path: string, appDir: string = __app_dir__): string => {
   return path
-    .replace(appDir, "")
-    .replace(/\(.*\)/g, "")
-    .replace(/\/$/, "")
-    .replace(/^\/\//, "/")
-    .replace(/\.[a-z]+$/, "")
-    .replace(/\/page$/, "")
-    .replace(/\/{2,}/g, "/");
+    .replace(appDir, '')
+    .replace(/\(.*\)/g, '')
+    .replace(/\/$/, '')
+    .replace(/^\/\//, '/')
+    .replace(/\.[a-z]+$/, '')
+    .replace(/\/page$/, '')
+    .replace(/\/{2,}/g, '/');
 };
 const walk = async (dir: string): Promise<IFSTreeWalker> => {
   const paths = await fs.readdir(dir);
@@ -21,8 +21,8 @@ const walk = async (dir: string): Promise<IFSTreeWalker> => {
   };
 
   const valid_path_rules = [
-    (p: string) => !p.startsWith("_"),
-    (p: string) => !p.startsWith("."),
+    (p: string) => !p.startsWith('_'),
+    (p: string) => !p.startsWith('.'),
   ];
 
   for (const p of paths) {
@@ -47,13 +47,13 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
   const traverse = (tree: IFSTreeWalker, params: { [key: string]: string }) => {
     for (const path of tree.paths) {
       const { base } = path;
-      const isDynamic = base.includes("[") && base.includes("]");
+      const isDynamic = base.includes('[') && base.includes(']');
       const params = isDynamic
         ? Object.fromEntries(
             base
               .match(/\[(.*?)\]/g)!
-              .map((param) => param.replace(/\[|\]/g, ""))
-              .map((param) => [param, ""]),
+              .map((param) => param.replace(/\[|\]/g, ''))
+              .map((param) => [param, '']),
           )
         : {};
 
@@ -80,11 +80,11 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
 
     .filter((route) => {
       const { path } = route;
-      const name = path.split("/").pop();
-      const ext = name?.split(".").pop();
+      const name = path.split('/').pop();
+      const ext = name?.split('.').pop();
       const is_valid =
-        __valid_page_extensions__.includes("." + ext!) &&
-        name!.split(".").shift() === "page";
+        __valid_page_extensions__.includes('.' + ext!) &&
+        name!.split('.').shift() === 'page';
       return is_valid;
     })
     .map((route) => ({
@@ -92,7 +92,7 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
       path: cleanPath(route.path),
     }));
   routes_generated.push({
-    path: "/",
+    path: '/',
     params: {},
     isDynamic: false,
   });

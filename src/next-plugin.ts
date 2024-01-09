@@ -1,17 +1,17 @@
-import chalk from "chalk";
-import { watch } from "chokidar";
-import fs from "fs";
+import chalk from 'chalk';
+import { watch } from 'chokidar';
+import fs from 'fs';
 import {
   NextJsWebpackConfig,
   WebpackConfigContext,
-} from "next/dist/server/config-shared";
-import type { Compiler, WebpackPluginInstance } from "webpack";
-import { __gen_declarations__, __gen_link$__ } from "./codegen";
-import { __types_dir__ } from "./config";
-import { NextRoutesOptions } from "./types";
+} from 'next/dist/server/config-shared';
+import type { Compiler, WebpackPluginInstance } from 'webpack';
+import { __gen_declarations__, __gen_link$__ } from './codegen';
+import { __types_dir__ } from './config';
+import { NextRoutesOptions } from './types';
 
 class NextRoutesPlugin implements WebpackPluginInstance {
-  name = "NextRoutesPlugin";
+  name = 'NextRoutesPlugin';
 
   constructor(
     private config: NextJsWebpackConfig,
@@ -29,21 +29,21 @@ class NextRoutesPlugin implements WebpackPluginInstance {
     console.log(chalk.cyanBright(`📦 Emitting declaration file...`));
     await __gen_declarations__(appDir, declarationPath);
     console.log(chalk.greenBright(`📦 Declaration file emitted!`));
-    if (!fs.existsSync(utilsPath.split("/").slice(0, -1).join("/"))) {
+    if (!fs.existsSync(utilsPath.split('/').slice(0, -1).join('/'))) {
       console.log(
         chalk.cyanBright(
-          `🤩 Creating ${utilsPath.split("/").slice(0, -1).join("/")}...`,
+          `🤩 Creating ${utilsPath.split('/').slice(0, -1).join('/')}...`,
         ),
       );
-      fs.mkdirSync(utilsPath.split("/").slice(0, -1).join("/"));
+      fs.mkdirSync(utilsPath.split('/').slice(0, -1).join('/'));
     }
     await __gen_link$__(appDir, utilsPath);
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       const watcher = watch(appDir, {
         ignored: [/node_modules/, /(^|[\/\\])\../, /(^|[\/\\])_/],
         persistent: true,
       });
-      watcher.on("ready", () => {
+      watcher.on('ready', () => {
         console.log(chalk.cyanBright(`👀 Watching the app directory...`));
       });
 
@@ -69,21 +69,21 @@ class NextRoutesPlugin implements WebpackPluginInstance {
         }, 300);
       };
 
-      watcher.on("all", (event, path) => {
-        if (event === "add" || event === "unlink") {
+      watcher.on('all', (event, path) => {
+        if (event === 'add' || event === 'unlink') {
           scheduleRegenerateRoutes(path);
         }
       });
 
-      process.on("SIGINT", () => {
+      process.on('SIGINT', () => {
         watcher.close();
         process.exit();
       });
-      process.on("SIGTERM", () => {
+      process.on('SIGTERM', () => {
         watcher.close();
         process.exit();
       });
-      process.on("exit", () => {
+      process.on('exit', () => {
         watcher.close();
       });
     }

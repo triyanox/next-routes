@@ -39,7 +39,7 @@ yarn add @triyanox/next-routes
 1. In your `next.config.js` file, add the following:
 
 ```js
-import withRoutes from "@triyanox/next-routes";
+import withRoutes from '@triyanox/next-routes';
 
 const config = withRoutes({
   //... your next config
@@ -51,20 +51,20 @@ export default config;
 2. Import link$ function from @/lib and use it in your components:
 
 ```js
-import link$ from "@/lib";
-import Link from "next/link";
+import link$ from '@/lib';
+import Link from 'next/link';
 
 const MyComponent = () => {
   return (
     <Link
       href={link$({
-        path: "/[slug]",
+        path: '/[slug]',
         params: {
-          slug: "home",
+          slug: 'home',
         },
-        hash: "my-hash",
+        hash: 'my-hash',
         query: {
-          foo: "bar",
+          foo: 'bar',
         },
       })}
     >
@@ -81,16 +81,16 @@ const MyComponent = () => {
 You can customize the behavior of `@triyanox/next-routes` by passing an options object to the `withRoutes` function. Here's an example:
 
 ```js
-import withRoutes from "@triyanox/next-routes";
+import withRoutes from '@triyanox/next-routes';
 
 const config = withRoutes(
   {
     //... your next config
   },
   {
-    appDir: "src/app", // The path to your Next.js app directory. Defaults to "./src/app".
-    declarationPath: "node_modules/@types/next-routes/index.d.ts", // The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
-    utilsPath: "src/lib/link$.ts", // The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
+    appDir: 'src/app', // The path to your Next.js app directory. Defaults to "./src/app".
+    declarationPath: 'node_modules/@types/next-routes/index.d.ts', // The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
+    utilsPath: 'src/lib/link$.ts', // The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
   },
 );
 

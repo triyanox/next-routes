@@ -1,7 +1,7 @@
-import { NextConfig } from "next";
-import { defaultNextRoutesOptions } from "./config";
-import NextRoutesPlugin from "./next-plugin";
-import { NextRoutesOptions } from "./types";
+import { NextConfig } from 'next';
+import { defaultNextRoutesOptions } from './config';
+import NextRoutesPlugin from './next-plugin';
+import { NextRoutesOptions } from './types';
 
 /**
  * @module @triyanox/next-routes
