@@ -5,6 +5,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/triyanox/next-routes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/triyanox/next-routes/issues"
+  },
+  "homepage": "https://github.com/triyanox/next-routes",
   "main": "dist/index.js",
   "author": {
     "name": "Mohamed Achaq",
