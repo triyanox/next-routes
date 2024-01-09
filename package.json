@@ -8,6 +8,7 @@
     "url": "https://achaq.dev"
   },
   "scripts": {
+    "format": "prettier --write .",
     "lint": "eslint --ext .ts,.tsx src",
     "build": "tsup src/index.ts --dts",
     "changeset": "changeset",
@@ -31,7 +32,10 @@
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
     "next": "^14.0.4",
+    "prettier": "^3.1.1",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
