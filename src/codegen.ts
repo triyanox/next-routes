@@ -50,8 +50,7 @@ const link$ = <T extends keyof RoutesOutput = keyof RoutesOutput>({
     const params_keys = Object.keys(params!);
     const params_values = Object.values(params!);
     path = params_keys.reduce((acc, key, index) => {
-      // @ts-ignore
-      return acc.replace(${'`[${key}]`, params_values[index]'});
+      return acc.replace(${'`[${key}]`, params_values[index] as string'});
     }, route.path);
   }
 
