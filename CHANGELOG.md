@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.0.4
+
+### Patch Changes
+
+- Fix types and add package metadata
+
 ## 0.0.3
 
 ### Patch Changes
