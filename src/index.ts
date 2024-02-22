@@ -4,14 +4,9 @@ import NextRoutesPlugin from './next-plugin';
 import { NextRoutesOptions } from './types';
 
 /**
- * @module @triyanox/next-routes
- */
-
-/**
- * @description
  * `@triyanox/next-routes` is a powerful plugin for Next.js that ensures your application's links are always valid. It generates routes and utilities for your application, making link management a breeze.
  *
- * @roadmap
+ * @todo
  * - [x] Support TypeScript out of the box
  * - [x] Support Next.js 13+ app directory structure
  * - [x] Generate routes and utilities for your application
@@ -22,9 +17,8 @@ import { NextRoutesOptions } from './types';
  * - [ ] Support optional catch-all routes (e.g. `/[[...slug]]`)
  * - [ ] more features coming soon...
  *
- *
  * @example
- * // Basic Setup
+ * Basic Setup
  *
  * // 1. In your `next.config.js` file, add the following:
  * import withRoutes from "@triyanox/next-routes";
@@ -35,7 +29,7 @@ import { NextRoutesOptions } from './types';
  *
  * export default config;
  *
- * // 2. Import link$ function from @/lib and use it in your components:
+ * // 2. Import link$ function from `@/lib` and use it in your components:
  * import link$ from "@/lib";
  * import Link from "next/link";
  *
@@ -54,26 +48,26 @@ import { NextRoutesOptions } from './types';
  *       })}
  *     >
  *       Home
- *     </Link>
+ *     </Link
  *   );
  * };
  *
  * // 3. Run your app and enjoy!
  *
- * @example
- * // Advanced Setup
+ * Advanced Setup
  *
  * // You can customize the behavior of `@triyanox/next-routes` by passing an options object to the `withRoutes` function. Here's an example:
  * import withRoutes from "@triyanox/next-routes";
+ * import path from 'path';
  *
  * const config = withRoutes(
  *   {
  *     //... your next config
  *   },
  *   {
- *     appDir: "src/app", // The path to your Next.js app directory. Defaults to "./src/app".
- *     declarationPath: "node_modules/@types/next-routes/index.d.ts", // The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
- *     utilsPath: "src/lib/link$.ts", // The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
+ *     appDir: path.resolve(process.cwd(), 'src/app'), // optional: The path to your Next.js app directory. Defaults to "src/app".
+ *     declarationPath: path.resolve(process.cwd(), 'node_modules/@types/', 'next-routes/index.d.ts'), // optional: The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
+ *     utilsPath: path.resolve(process.cwd(), 'src/lib/link$.ts') // optional: The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
  *   },
  * );
  *
