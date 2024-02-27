@@ -90,9 +90,13 @@ const config = withRoutes(
   },
   {
     appDir: path.resolve(process.cwd(), 'src/app'), // optional: The path to your Next.js app directory. Defaults to "src/app".
-    declarationPath: path.resolve(process.cwd(), 'node_modules/@types/', 'next-routes/index.d.ts'), // optional: The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
-    utilsPath: path.resolve(process.cwd(), 'src/lib/link$.ts') // optional: The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
- *   },
+    declarationPath: path.resolve(
+      process.cwd(),
+      'node_modules/@types',
+      'next-routes/index.d.ts',
+    ), // optional: The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
+    utilsPath: path.resolve(process.cwd(), 'src/lib/link$.ts'), // optional: The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
+  },
 );
 
 export default config;
