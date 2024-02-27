@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.1.0
+
+### Minor Changes
+
+- Refactoring and cleaning
+
 ## 0.0.5
 
 ### Patch Changes
