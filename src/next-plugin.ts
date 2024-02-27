@@ -10,8 +10,20 @@ import { __gen_declarations__, __gen_link$__ } from './codegen';
 import { __types_dir__ } from './config';
 import { NextRoutesOptions } from './types';
 
+const createDirectoryIfNotExists = (dir: string) => {
+  if (!fs.existsSync(dir)) {
+    console.log(chalk.greenBright(`📦 Creating ${dir}...`));
+    fs.mkdirSync(dir);
+  }
+};
+
+const getDirectoryFromPath = (filePath: string) =>
+  filePath.split('/').slice(0, -1).join('/');
+
 class NextRoutesPlugin implements WebpackPluginInstance {
   name = 'NextRoutesPlugin';
+  private changedFiles = new Set<string>();
+  private regenerateTimeout?: NodeJS.Timeout;
 
   constructor(
     private config: NextJsWebpackConfig,
@@ -22,22 +34,20 @@ class NextRoutesPlugin implements WebpackPluginInstance {
   async generateRoutes() {
     const { appDir, declarationPath, utilsPath } = this.nextRoutesOptions;
     console.log(chalk.cyanBright(`🚀 Generating routes...`));
-    if (!fs.existsSync(__types_dir__)) {
-      console.log(chalk.greenBright(`📦 Creating ${__types_dir__}...`));
-      fs.mkdirSync(__types_dir__);
-    }
+    createDirectoryIfNotExists(__types_dir__);
+    createDirectoryIfNotExists(getDirectoryFromPath(utilsPath));
+    await this.emitDeclarationFile(appDir, declarationPath);
+    await __gen_link$__(appDir, utilsPath);
+    this.watchForChanges(appDir, declarationPath, utilsPath);
+  }
+
+  async emitDeclarationFile(appDir: string, declarationPath: string) {
     console.log(chalk.cyanBright(`📦 Emitting declaration file...`));
     await __gen_declarations__(appDir, declarationPath);
     console.log(chalk.greenBright(`📦 Declaration file emitted!`));
-    if (!fs.existsSync(utilsPath.split('/').slice(0, -1).join('/'))) {
-      console.log(
-        chalk.cyanBright(
-          `🤩 Creating ${utilsPath.split('/').slice(0, -1).join('/')}...`,
-        ),
-      );
-      fs.mkdirSync(utilsPath.split('/').slice(0, -1).join('/'));
-    }
-    await __gen_link$__(appDir, utilsPath);
+  }
+
+  watchForChanges(appDir: string, declarationPath: string, utilsPath: string) {
     if (process.env.NODE_ENV === 'development') {
       const watcher = watch(appDir, {
         ignored: [/node_modules/, /(^|[/\\])\../, /(^|[/\\])_/],
@@ -46,47 +56,58 @@ class NextRoutesPlugin implements WebpackPluginInstance {
       watcher.on('ready', () => {
         console.log(chalk.cyanBright(`👀 Watching the app directory...`));
       });
-
-      const changedFiles = new Set();
-      let regenerateTimeout: NodeJS.Timeout;
-
-      const regenerateRoutes = async () => {
-        console.log(
-          chalk.cyanBright(
-            `🚀 Regenerating routes for ${changedFiles.size} changed files...`,
-          ),
-        );
-        await __gen_declarations__(appDir, declarationPath);
-        await __gen_link$__(appDir, utilsPath);
-        changedFiles.clear();
-      };
-
-      const scheduleRegenerateRoutes = (path: string) => {
-        changedFiles.add(path);
-        clearTimeout(regenerateTimeout);
-        regenerateTimeout = setTimeout(() => {
-          regenerateRoutes();
-        }, 300);
-      };
-
       watcher.on('all', (event, path) => {
         if (event === 'add' || event === 'unlink') {
-          scheduleRegenerateRoutes(path);
+          this.scheduleRegenerateRoutes(
+            path,
+            appDir,
+            declarationPath,
+            utilsPath,
+          );
         }
       });
-
-      process.on('SIGINT', () => {
-        watcher.close();
-        process.exit();
-      });
-      process.on('SIGTERM', () => {
-        watcher.close();
-        process.exit();
-      });
-      process.on('exit', () => {
-        watcher.close();
-      });
+      this.setupExitHandlers(watcher);
     }
+  }
+
+  scheduleRegenerateRoutes(
+    path: string,
+    appDir: string,
+    declarationPath: string,
+    utilsPath: string,
+  ) {
+    this.changedFiles.add(path);
+    clearTimeout(this.regenerateTimeout);
+    this.regenerateTimeout = setTimeout(() => {
+      this.regenerateRoutes(appDir, declarationPath, utilsPath);
+    }, 300);
+  }
+
+  async regenerateRoutes(
+    appDir: string,
+    declarationPath: string,
+    utilsPath: string,
+  ) {
+    console.log(
+      chalk.cyanBright(
+        `🚀 Regenerating routes for ${this.changedFiles.size} changed files...`,
+      ),
+    );
+    await this.emitDeclarationFile(appDir, declarationPath);
+    await __gen_link$__(appDir, utilsPath);
+    this.changedFiles.clear();
+  }
+
+  setupExitHandlers(watcher: fs.FSWatcher) {
+    const closeWatcherAndExit = () => {
+      watcher.close();
+      process.exit();
+    };
+    process.on('SIGINT', closeWatcherAndExit);
+    process.on('SIGTERM', closeWatcherAndExit);
+    process.on('exit', () => {
+      watcher.close();
+    });
   }
 
   apply() {

@@ -1,23 +1,15 @@
 import fs from 'fs/promises';
 import { getRoutesMap } from './utils';
 
-const __gen_declarations__ = async (
-  appDir: string,
-  declarationPath: string,
-) => {
-  const __path__ = declarationPath;
+const getRoutesDeclaration = async (appDir: string) => {
   const routes_map = await getRoutesMap(appDir);
-  const routes_declaration_file = `
-const routes = ${JSON.stringify(routes_map, null, 2)};
-declare type RoutesOutput = typeof routes;
-    `;
-  await fs.writeFile(__path__, routes_declaration_file);
+  return `const routes = ${JSON.stringify(routes_map, null, 2)};
+declare type RoutesOutput = typeof routes;`;
 };
-const __gen_link$__ = async (appDir: string, utilsPath: string) => {
-  const __path__ = utilsPath;
+
+const getLinkFunction = async (appDir: string) => {
   const routes_map = await getRoutesMap(appDir);
-  const link_function_file = `
-export const routes = ${JSON.stringify(routes_map, null, 2)};
+  return `export const routes = ${JSON.stringify(routes_map, null, 2)};
 type IsEmptyObject<T> = keyof T extends never ? true : false;
 
 type Link$Options<T extends keyof RoutesOutput = keyof RoutesOutput> =
@@ -69,8 +61,23 @@ const link$ = <T extends keyof RoutesOutput = keyof RoutesOutput>({
 };
 
 export default link$;`;
+};
 
-  await fs.writeFile(__path__, link_function_file);
+const writeFile = async (path: string, data: string) => {
+  await fs.writeFile(path, data);
+};
+
+const __gen_declarations__ = async (
+  appDir: string,
+  declarationPath: string,
+) => {
+  const routes_declaration_file = await getRoutesDeclaration(appDir);
+  await writeFile(declarationPath, routes_declaration_file);
+};
+
+const __gen_link$__ = async (appDir: string, utilsPath: string) => {
+  const link_function_file = await getLinkFunction(appDir);
+  await writeFile(utilsPath, link_function_file);
 };
 
 export { __gen_declarations__, __gen_link$__ };

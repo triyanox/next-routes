@@ -13,6 +13,9 @@ const cleanPath = (path: string, appDir: string = __app_dir__): string => {
     .replace(/\/page$/, '')
     .replace(/\/{2,}/g, '/');
 };
+
+const isValidPath = (p: string) => !p.startsWith('_') && !p.startsWith('.');
+
 const walk = async (dir: string): Promise<IFSTreeWalker> => {
   const paths = await fs.readdir(dir);
   const tree: IFSTreeWalker = {
@@ -20,38 +23,32 @@ const walk = async (dir: string): Promise<IFSTreeWalker> => {
     paths: [],
   };
 
-  const valid_path_rules = [
-    (p: string) => !p.startsWith('_'),
-    (p: string) => !p.startsWith('.'),
-  ];
-
   for (const p of paths) {
-    const stat = await fs.stat(path.join(dir, p));
-    if (stat.isDirectory()) {
-      if (!valid_path_rules.every((rule) => rule(p))) {
-        continue;
-      }
-      tree.paths.push(await walk(path.join(dir, p)));
+    const fullPath = path.join(dir, p);
+    const stat = await fs.stat(fullPath);
+    if (stat.isDirectory() && isValidPath(p)) {
+      tree.paths.push(await walk(fullPath));
     } else {
       tree.paths.push({
-        base: path.join(dir, p),
+        base: fullPath,
         paths: [],
       });
     }
   }
   return tree;
 };
+
+const isDynamicPath = (base: string) =>
+  base.includes('[') && base.includes(']');
+
 const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
   const tree = await walk(appDir);
   const routes: IRoute[] = [];
-  const traverse = (
-    tree: IFSTreeWalker,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _params: { [key: string]: string },
-  ) => {
+
+  const traverse = (tree: IFSTreeWalker) => {
     for (const path of tree.paths) {
       const { base } = path;
-      const isDynamic = base.includes('[') && base.includes(']');
+      const isDynamic = isDynamicPath(base);
       const params = isDynamic
         ? Object.fromEntries(
             base
@@ -61,40 +58,33 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
           )
         : {};
 
-      let route = {
+      routes.push({
         path: base,
-        params,
         isDynamic,
-      } as IRoute;
+        params,
+      });
 
-      if (!isDynamic) {
-        route = {
-          path: base,
-          isDynamic,
-          params: {},
-        };
-      }
-
-      routes.push(route);
-      traverse(path, { ...params, ...route.params });
+      traverse(path);
     }
   };
-  traverse(tree, {});
-  const routes_generated = routes
 
+  traverse(tree);
+
+  const routes_generated = routes
     .filter((route) => {
       const { path } = route;
       const name = path.split('/').pop();
       const ext = name?.split('.').pop();
-      const is_valid =
+      return (
         __valid_page_extensions__.includes('.' + ext!) &&
-        name!.split('.').shift() === 'page';
-      return is_valid;
+        name!.split('.').shift() === 'page'
+      );
     })
     .map((route) => ({
       ...route,
       path: cleanPath(route.path),
     }));
+
   routes_generated.push({
     path: '/',
     params: {},
@@ -103,12 +93,10 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
 
   return routes_generated;
 };
+
 const getRoutesMap = async (appDir: string) => {
   const routes = await generateRoutes(appDir);
-  const routes_map = Object.fromEntries(
-    routes.map((route) => [route.path, route]),
-  );
-  return routes_map;
+  return Object.fromEntries(routes.map((route) => [route.path, route]));
 };
 
 export { cleanPath, generateRoutes, getRoutesMap, walk };
