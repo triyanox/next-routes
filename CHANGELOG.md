@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.1.1
+
+### Patch Changes
+
+- Update jsdoc and readme for easier use
+
 ## 0.1.0
 
 ### Minor Changes
