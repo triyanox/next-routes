@@ -4,27 +4,26 @@ import NextRoutesPlugin from './next-plugin';
 import { NextRoutesOptions } from './types';
 
 /**
- * @module @triyanox/next-routes
- * @description A powerful plugin for Next.js that ensures your application's links are always valid.
+ * A powerful plugin for Next.js that ensures your application's links are always valid.
  * It generates routes and utilities for your application, making link management a breeze.
- * 
+ *
  * @example
  * // Basic Setup
  * // If you are using the `src` directory you can simply wrap your config with `withRoutes`
  * import withRoutes from '@triyanox/next-routes';
- * 
+ *
  * const config = withRoutes({
  *   //... your next config
  * });
- * 
+ *
  * export default config;
- * 
+ *
  * // Advanced Setup
  * // if you are not using the `src` directory you can override the default options
  * import withRoutes from '@triyanox/next-routes';
  * import path from 'path';
  * import { cwd } from 'process';
- * 
+ *
  * const config = withRoutes(
  *   {
  *     //... your next config
@@ -38,13 +37,13 @@ import { NextRoutesOptions } from './types';
  *     utilsPath: path.resolve(cwd(), './lib.ts'),
  *   },
  * );
- * 
+ *
  * export default config;
- * 
+ *
  * // Usage in components
  * import link$ from '@/lib';
  * import Link from 'next/link';
- * 
+ *
  * const MyComponent = () => {
  *   return (
  *     <Link
