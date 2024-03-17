@@ -5,6 +5,7 @@
 ### Patch Changes
 
 - Fix the issue with the path when app directory is overriden
+- Update jsdoc and readme for easier use
 
 ## 0.1.0
 
