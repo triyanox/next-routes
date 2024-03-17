@@ -4,76 +4,65 @@ import NextRoutesPlugin from './next-plugin';
 import { NextRoutesOptions } from './types';
 
 /**
- * `@triyanox/next-routes` is a powerful plugin for Next.js that ensures your application's links are always valid. It generates routes and utilities for your application, making link management a breeze.
- *
- * @todo
- * - [x] Support TypeScript out of the box
- * - [x] Support Next.js 13+ app directory structure
- * - [x] Generate routes and utilities for your application
- * - [x] Support static routes (e.g. `/about`)
- * - [x] Support dynamic routes (e.g. `/[slug]`)
- * - [x] Support route groups (e.g. `(auth)/login`)
- * - [ ] Support catch-all routes (e.g. `/[...slug]`)
- * - [ ] Support optional catch-all routes (e.g. `/[[...slug]]`)
- * - [ ] more features coming soon...
- *
+ * @module @triyanox/next-routes
+ * @description A powerful plugin for Next.js that ensures your application's links are always valid.
+ * It generates routes and utilities for your application, making link management a breeze.
+ * 
  * @example
- * Basic Setup
- *
- * // 1. In your `next.config.js` file, add the following:
- * import withRoutes from "@triyanox/next-routes";
- *
+ * // Basic Setup
+ * // If you are using the `src` directory you can simply wrap your config with `withRoutes`
+ * import withRoutes from '@triyanox/next-routes';
+ * 
  * const config = withRoutes({
  *   //... your next config
  * });
- *
+ * 
  * export default config;
- *
- * // 2. Import link$ function from `@/lib` and use it in your components:
- * import link$ from "@/lib";
- * import Link from "next/link";
- *
- * const MyComponent = () => {
- *   return (
- *     <Link
- *       href={link$({
- *         path: "/[slug]",
- *         params: {
- *           slug: "home",
- *         },
- *         hash: "my-hash",
- *         query: {
- *           foo: "bar",
- *         },
- *       })}
- *     >
- *       Home
- *     </Link
- *   );
- * };
- *
- * // 3. Run your app and enjoy!
- *
- * Advanced Setup
- *
- * // You can customize the behavior of `@triyanox/next-routes` by passing an options object to the `withRoutes` function. Here's an example:
- * import withRoutes from "@triyanox/next-routes";
+ * 
+ * // Advanced Setup
+ * // if you are not using the `src` directory you can override the default options
+ * import withRoutes from '@triyanox/next-routes';
  * import path from 'path';
- *
+ * import { cwd } from 'process';
+ * 
  * const config = withRoutes(
  *   {
  *     //... your next config
  *   },
  *   {
- *     appDir: path.resolve(process.cwd(), 'src/app'), // optional: The path to your Next.js app directory. Defaults to "src/app".
- *     declarationPath: path.resolve(process.cwd(), 'node_modules/@types', 'next-routes/index.d.ts'), // optional: The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
- *     utilsPath: path.resolve(process.cwd(), 'src/lib/link$.ts') // optional: The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
+ *     appDir: path.resolve(cwd(), './app'),
+ *     declarationPath: path.resolve(
+ *       cwd(),
+ *       './node_modules/@types/next-routes/index.d.ts',
+ *     ),
+ *     utilsPath: path.resolve(cwd(), './lib.ts'),
  *   },
  * );
- *
+ * 
  * export default config;
- *
- * // In this example, the appDir, declarationPath, and utilsPath options are used to customize the behavior of `@triyanox/next-routes`.
+ * 
+ * // Usage in components
+ * import link$ from '@/lib';
+ * import Link from 'next/link';
+ * 
+ * const MyComponent = () => {
+ *   return (
+ *     <Link
+ *       href={link$({
+ *           path: '/blog/[slug]',
+ *           params: {
+ *             slug: 'post-id',
+ *           },
+ *           hash: 'my-hash',
+ *           query: {
+ *             foo: 'bar',
+ *           },
+ *       })}
+ *     >
+ *       Post
+ *     </Link>
+ *   );
+ * };
  *
  * @see {@link https://github.com/triyanox/next-routes | GitHub Repository}
  */
