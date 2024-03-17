@@ -83,6 +83,7 @@ You can customize the behavior of `@triyanox/next-routes` by passing an options 
 ```js
 import withRoutes from '@triyanox/next-routes';
 import path from 'path';
+import { cwd } from 'process';
 
 // this is an example not using the `src` directory
 const config = withRoutes(
