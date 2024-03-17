@@ -40,6 +40,8 @@ yarn add @triyanox/next-routes
 
 ```js
 import withRoutes from '@triyanox/next-routes';
+// if you are using the `src` directory you can just
+// wrap your config object with `withRoutes`
 
 const config = withRoutes({
   //... your next config
@@ -58,14 +60,14 @@ const MyComponent = () => {
   return (
     <Link
       href={link$({
-        path: '/[slug]',
-        params: {
-          slug: 'home',
-        },
-        hash: 'my-hash',
-        query: {
-          foo: 'bar',
-        },
+          path: '/[slug]',
+          params: {
+            slug: 'home',
+          },
+          hash: 'my-hash',
+          query: {
+            foo: 'bar',
+          },
       })}
     >
       Home
