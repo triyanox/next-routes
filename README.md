@@ -84,18 +84,18 @@ You can customize the behavior of `@triyanox/next-routes` by passing an options 
 import withRoutes from '@triyanox/next-routes';
 import path from 'path';
 
+// this is an example not using the `src` directory
 const config = withRoutes(
   {
     //... your next config
   },
   {
-    appDir: path.resolve(process.cwd(), 'src/app'), // optional: The path to your Next.js app directory. Defaults to "src/app".
+    appDir: path.resolve(cwd(), './app'),
     declarationPath: path.resolve(
-      process.cwd(),
-      'node_modules/@types',
-      'next-routes/index.d.ts',
-    ), // optional: The path where the plugin will generate the declaration file. Defaults to "node_modules/@types/next-routes/index.d.ts".
-    utilsPath: path.resolve(process.cwd(), 'src/lib/link$.ts'), // optional: The path where the plugin will generate utility functions. Defaults to "src/lib/link$.ts".
+      cwd(),
+      './node_modules/@types/next-routes/index.d.ts',
+    ),
+    utilsPath: path.resolve(cwd(), './lib.ts'),
   },
 );
 
