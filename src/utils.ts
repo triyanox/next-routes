@@ -82,7 +82,7 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
     })
     .map((route) => ({
       ...route,
-      path: cleanPath(route.path),
+      path: cleanPath(route.path, appDir),
     }));
 
   routes_generated.push({
