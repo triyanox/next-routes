@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.1.1
+
+### Patch Changes
+
+- Fix the issue with the path when app directory is overriden
+
 ## 0.1.0
 
 ### Minor Changes
