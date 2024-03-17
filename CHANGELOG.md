@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.1.3
+
+### Patch Changes
+
+- Fix readme and docs
+
 ## 0.1.2
 
 ### Patch Changes
