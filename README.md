@@ -98,7 +98,7 @@ const config = withRoutes(
       cwd(),
       './node_modules/@types/next-routes/index.d.ts',
     ),
-    utilsPath: path.resolve(cwd(), './lib.ts'),
+    utilsPath: path.resolve(cwd(), './lib/link.ts'),
   },
 );
 
