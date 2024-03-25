@@ -1,7 +1,7 @@
 {
   "name": "@triyanox/next-routes",
   "description": "You will never have broken links in your Next.js app again",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public"
   },
