@@ -1,5 +1,11 @@
 # @triyanox/next-routes
 
+## 0.1.4
+
+### Patch Changes
+
+- Remove empty path from generated routes
+
 ## 0.1.3
 
 ### Patch Changes
