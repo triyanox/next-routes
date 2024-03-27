@@ -84,7 +84,11 @@ const generateRoutes = async (appDir: string): Promise<IRoute[]> => {
       ...route,
       path: cleanPath(route.path, appDir),
     }))
-    .filter((route) => route.path !== '');
+    .filter((route) => route.path !== '')
+    .map((route) => ({
+      ...route,
+      path: route.path === '/' ? route.path : route.path.replace(/\/$/, ''),
+    }));
 
   routes_generated.push({
     path: '/',
